@@ -1,0 +1,57 @@
+<ion-header>
+
+	<ion-navbar>
+		<button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+		<ion-title>Ridge Runners Hort Park Event</ion-title>
+	</ion-navbar>
+
+</ion-header>
+
+<ion-content>
+	<!-- <div class="logo">
+		<img src="assets/img/rr.png" alt="RR Logo">
+	</div> -->
+	<!-- <button>
+		<ion-icon name="logo-facebook"></ion-icon>
+	</button> -->
+	<!-- <div id = "mainback">
+		<img src="assets/img/rr.png" />
+	</div> -->
+	<!-- <button (click) = "facebookLogin()">Facebook</button> -->
+	<button ion-button icon-left block (click) = "facebookLogin()">
+		<ion-icon name="logo-facebook"></ion-icon>
+		Login With Facebook
+	</button>
+
+	<button ion-button icon-left block (click) = "facebookLogout()">
+		<ion-icon name="logo-facebook"></ion-icon>
+		Logout
+	</button>
+	<button ion-button icon-left (click)="getDetails()">
+		Get Details
+	</button>
+
+	<ion-row>
+	 <ion-col col-9>
+		 <ion-item>
+			 <ion-input type="text" [(ngModel)]="newComment" placeholder="New Shopping item"></ion-input>
+		 </ion-item>
+	 </ion-col>
+	 <ion-col>
+		 <button ion-button (click)="addComment()">Add!</button>
+	 </ion-col>
+ </ion-row>
+
+ <ion-grid>
+	 <ion-row>
+		 <ion-col col-6 *ngFor="let item of images | async ">
+			 <ion-card>
+				<img src={{item.url}} />
+			 </ion-card>
+		 </ion-col>
+	 </ion-row>
+ </ion-grid>
+
+	</ion-content>

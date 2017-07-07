@@ -1,0 +1,45 @@
+<ion-header no-border>
+  <ion-navbar>
+    <ion-buttons end *ngIf="showSkip">
+      <button ion-button (click)="startApp()" color="primary">Skip</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-bounce>
+  <ion-slides #slides (ionSlideWillChange)="onSlideChangeStart($event)" pager>
+
+    <ion-slide>
+      <img src="assets/img/run.png" class="slide-image"/>
+      <h2 class="slide-title">
+        Good Day <b>Ridge Runners</b>!
+      </h2>
+      <p>
+        Ridge Runners is hosting this leisure running event for all like-minded individuals to come together and enjoy the beauty of nature.
+      </p>
+    </ion-slide>
+
+    <ion-slide>
+      <!-- <img src="assets/img/idea.png" class="slide-image"/> -->
+      <h2 class="slide-title" >Our Purpose</h2>
+      <p><b>Ridge Runners</b> is presenting to you this event that lets you share your running journey through photos. As you move along the route, have a photograph with your friends or with the surroundings.</p>
+      <img src="assets/img/run2.png" class="slide-image"/>
+    </ion-slide>
+
+    <!-- <ion-slide>
+      <img src="assets/img/run2.png" class="slide-image"/>
+      <h2 class="slide-title">Upon Completion</h2>
+      <p>You will be presented with a virtual medal. How big of the medal you receive depends on the distance you could cover! Go for the distance!</p>
+    </ion-slide> -->
+
+    <ion-slide>
+      <img src="assets/img/run1.png" class="slide-image"/>
+      <h2 class="slide-title">Ready to Run?</h2>
+      <button ion-button icon-right large clear (click)="startApp()">
+        Continue
+        <ion-icon name="arrow-forward"></ion-icon>
+      </button>
+    </ion-slide>
+
+  </ion-slides>
+</ion-content>

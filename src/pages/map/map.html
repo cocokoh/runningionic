@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Map</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="map-page">
+  <div style="height: 80%; width: 100%" #mapCanvas id="map">
+
+  </div>
+  <div id = "camerabut">
+  <button ion-button>End</button>
+  <button ion-button (click)="takePhoto()">Camera</button>
+  </div>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col col-6 *ngFor="let photo of photos">
+        <ion-card>
+         <img [src]="_DomSanitizationService.bypassSecurityTrustUrl(photo)" *ngIf="photo" />
+         <button (click) = "shareFb()">Facebook</button>
+         <button (click) = "savePic()">Publish to All</button>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+    <button ion-button (click)="updateLocation()">Update</button>
+
+</ion-content>
