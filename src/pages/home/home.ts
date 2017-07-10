@@ -3,19 +3,25 @@ import { Component } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation';
 import { AlertController, NavController, ToastController } from 'ionic-angular';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
-import { FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { FirebaseProvider } from './../../providers/firebase/firebase';
+import { StartPage } from '../start/start';
+import { MapPage } from '../map/map';
+
 @Component({
   selector: 'page-user',
   providers: [Facebook, Geolocation],
   templateUrl: 'home.html'
 })
 export class HomePage {
+  StartPage = StartPage;
+  MapPage = MapPage;
   submitted: boolean = false;
   supportMessage: string;
   comment: FirebaseListObservable<any[]>;
   images: FirebaseListObservable<any[]>;
   newComment = '';
+  fbid: string;
 
   constructor(
     public navCtrl: NavController,
@@ -23,7 +29,8 @@ export class HomePage {
     public toastCtrl: ToastController,
     private fb: Facebook,
     public firebaseProvider: FirebaseProvider,
-    public geolocation: Geolocation
+    public geolocation: Geolocation,
+    public afd: AngularFireDatabase
   ) {
   this.comment = this.firebaseProvider.getComment();
   this.images = this.firebaseProvider.getPic();
@@ -41,10 +48,55 @@ export class HomePage {
     toast.present();
   }
 
+  // facebookLogin(){
+  //   this.fb.login(['email'])
+  //   .then((resp)=>{
+  //     this.fb.getLoginStatus().then((reply)=>{
+  //       if (reply.status == "connected"){
+  //       let fbid = reply.authResponse.userID
+  //       console.log(fbid)
+  //       let result = this.afd.list('/places/', {
+  //         query:{
+  //           equalTo: fbid
+  //         }
+  //       })
+  //       result.subscribe((data=>{
+  //         data.forEach((id)=>{
+  //           console.log(id.id, reply.status)
+  //           if (id.id == fbid){
+  //             alert('next')
+  //             this.navCtrl.push(MapPage)
+  //           } else {
+  //             alert('start')
+  //             this.navCtrl.push(StartPage)
+  //           }
+  //           this.fb.api("/" + reply.authResponse.userID + "?fields=age_range", [])
+  //           .then((response)=>{
+  //             console.log(response)
+  //           })
+  //         })
+  //       }))
+  //       }
+  //     })
+  //   })
+  // }
+
+
 facebookLogin(){
+  var result = this.afd.list('/places/')
+  console.log(result)
   this.fb.login(['email'])
   .then((resp)=>{
-    alert(JSON.stringify(resp.authResponse))
+    this.fb.getLoginStatus().then((reply)=>{
+      this.fbid = reply.authResponse.userID
+      if(reply.status == "connected"){
+        this.navCtrl.push(StartPage)
+        this.fb.api("/" + reply.authResponse.userID + "?fields=age_range", [])
+        .then((response)=>{
+          console.log(response)
+        })
+      }
+    })
   })}
 
 getDetails(){

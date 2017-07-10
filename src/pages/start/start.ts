@@ -34,12 +34,14 @@ addLocation(){
     this.fbid = response.authResponse.userID
     this.myLatLng = { lat: 1.2737864, lng: 103.8174964 };
     this.firebaseProvider.addPlace(this.fbid, this.myLatLng);
+    
+    this.navCtrl.push(MapPage);
 });
 }
 
-goMap() {
-    this.navCtrl.push(MapPage);
-}
+// goMap() {
+//     this.navCtrl.push(MapPage);
+// }
 
 
 

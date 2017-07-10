@@ -34,6 +34,7 @@ export class MapPage {
   @ViewChild('mapCanvas') mapElement: ElementRef;
   constructor(private camera: Camera, public confData: ConferenceData, public platform: Platform, private geolocation: Geolocation, public _DomSanitizationService: DomSanitizer, private file: File, private transfer: Transfer, private socialSharing: SocialSharing, public firebaseProvider: FirebaseProvider, private fb: Facebook, public modalCtrl: ModalController, public afd: AngularFireDatabase) {
     this.places = this.firebaseProvider.getPlace()
+    this.images = this.firebaseProvider.getPic();
   }
 
   ngOnInit() {
@@ -84,7 +85,7 @@ export class MapPage {
   }
 
   shareFb() {
-    this.socialSharing.shareViaFacebook("Ridge Running!", this.image, this.base64Image)
+    this.socialSharing.shareViaFacebook("#keepfitlivehealthy", this.image, this.base64Image)
   }
 
 
@@ -231,46 +232,45 @@ export class MapPage {
         }
       });
 
-      // var flightPlanCoordinates = [
-      //   { lat: 1.2737864, lng: 103.8174964 },
-      //   { lat: 1.2761007, lng: 103.813255 },
-      //   { lat: 1.2782322, lng: 103.8110981 },
-      //   { lat: 1.2804993, lng: 103.8017108 },
-      //   { lat: 1.2792443, lng: 103.8014168 },
-      //   { lat: 1.2794723, lng: 103.7996038 },
-      //   { lat: 1.2807203, lng: 103.7980268 }
-      // ];
-      // var flightPath = new google.maps.Polyline({
-      //   path: flightPlanCoordinates,
-      //   geodesic: true,
-      //   strokeColor: '#FF0000',
-      //   strokeOpacity: 1.0,
-      //   strokeWeight: 2
-      // });
-      var watchid = 0;
-      let watch = this.geolocation.watchPosition();
-        watch.subscribe((resp) => {
-          console.log('location' + watchid);
-          watchid= watchid + 1;
-          this.firebaseProvider.updateLocation(this.key, {lat: resp.coords.latitude, lng: resp.coords.longitude})
+      var flightPlanCoordinates = [
+        { lat: 1.2737864, lng: 103.8174964 },
+        { lat: 1.2761007, lng: 103.813255 },
+        { lat: 1.2782322, lng: 103.8110981 },
+        { lat: 1.2804993, lng: 103.8017108 },
+        { lat: 1.2792443, lng: 103.8014168 },
+        { lat: 1.2794723, lng: 103.7996038 },
+        { lat: 1.2807203, lng: 103.7980268 }
+      ];
+      var flightPath = new google.maps.Polyline({
+        path: flightPlanCoordinates,
+        geodesic: true,
+        strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 2
       });
-      result.subscribe((data => {
-        data.forEach((id)=>{
-          console.log('plotting location of' + id.id)
-          var marker = new google.maps.Marker({
-            position: id.latlng,
-            map: map,
-            title: 'Hello World!'
-          })
-          if(id.id==this.fbid){
-            var marker = new google.maps.Marker({
-              position: { lat: id.latlng.lat, lng: id.latlng.lng },
-              map: map,
-              title: 'Hello World!'
-            })
-        }
-        })
-      }))
+
+      let watch = this.geolocation.watchPosition();
+       watch.subscribe((resp) => {
+         console.log(resp.coords.latitude, resp.coords.longitude)
+         this.firebaseProvider.updateLocation(this.key, {lat: resp.coords.latitude, lng: resp.coords.longitude})
+      })
+
+      // result.subscribe((data => {
+      //   data.forEach((id)=>{
+      //     var marker = new google.maps.Marker({
+      //       position: id.latlng,
+      //       map: map,
+      //       title: 'Hello World!'
+      //     })
+      //     if(id.id==this.fbid){
+      //       var marker = new google.maps.Marker({
+      //         position: { lat: id.latlng.lat, lng: id.latlng.lng },
+      //         map: map,
+      //         title: 'Hello World!'
+      //       })
+      //   }
+      //   })
+      // }))
 
       google.maps.event.addListenerOnce(map, 'idle', () => {
         mapEle.classList.add('show-map');
@@ -293,17 +293,6 @@ export class MapPage {
       // this.setMarkers();
     })
     this.firebaseProvider.savePic(this.fbid, this.base64Image, this.myLatLng)
-  }
-
-  updateLocation() {
-    let fbid = "1823166311331121"
-    this.places.forEach((place: any) => {
-      place.forEach((lo: any) => {
-        if (lo.id == fbid) {
-          this.firebaseProvider.updateLocation(lo.$key, { lat: 2.3, lng: 3.4 })
-        }
-      })
-    });
   }
 
 }

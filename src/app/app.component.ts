@@ -59,6 +59,7 @@ export class ConferenceApp {
     // { title: 'Support', name: 'HomePage', component: HomePage, icon: 'help' },
     { title: 'Signup', name: 'SignupPage', component: SignupPage, icon: 'person-add' }
   ];
+
   rootPage: any;
 
   constructor(
